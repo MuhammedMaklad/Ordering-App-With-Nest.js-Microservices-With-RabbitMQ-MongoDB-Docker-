@@ -1,8 +1,15 @@
 import { NestFactory } from '@nestjs/core';
 import { BillingModule } from './billing.module';
+import { RmqService } from '@app/common';
+import { Logger } from '@nestjs/common';
 
 async function bootstrap() {
   const app = await NestFactory.create(BillingModule);
-  await app.listen(process.env.port ?? 3000);
+  const rmqService = app.get<RmqService>(RmqService);
+
+  app.connectMicroservice(rmqService.getOptions("BILLING"))
+  await app.startAllMicroservices()
+  Logger.log('Billing app running with microservice');
 }
-bootstrap();
+bootstrap()
+  .catch(error => Logger.error(error));
