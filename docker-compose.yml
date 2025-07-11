@@ -11,6 +11,8 @@ services:
       - mongodb-primary
       - mongodb-secondary
       - mongodb-arbiter
+      - rabbitmq
+      - billing
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -21,6 +23,7 @@ services:
     build:
       context: .
       dockerfile: ./apps/billing/Dockerfile
+      target: development
     command: npm run start:dev billing
     env_file:
       - ./apps/billing/.env
@@ -28,6 +31,7 @@ services:
       - mongodb-primary
       - mongodb-secondary
       - mongodb-arbiter
+      - rabbitmq
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules

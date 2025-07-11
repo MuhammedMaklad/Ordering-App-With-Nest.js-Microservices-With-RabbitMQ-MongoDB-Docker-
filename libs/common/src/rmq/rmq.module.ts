@@ -26,16 +26,27 @@ export class RmqModule {
             name, // The name of the client (used for injection)
             inject: [ConfigService], // Inject ConfigService for use in the factory
             imports: [ConfigModule], // Ensure ConfigModule is available
-            useFactory: (configService: ConfigService) => ({
-              transport: Transport.RMQ, // Use RabbitMQ transport
-              options: {
-                urls: [configService.get('RABBIT_MQ_URI')], // RabbitMQ connection URI from env
-                queue: configService.get(`RABBIT_MQ_${name}_QUEUE`), // Queue name from env, based on client name
-                queueOptions: {
-                  durable: true, // Make the queue durable (survives broker restarts)
+            useFactory: (configService: ConfigService) => {
+              const url = configService.get<string>('RABBIT_MQ_URI'); // Get RabbitMQ URI from environment variables
+              const queue = configService.get<string>(`RABBIT_MQ_${name}_QUEUE`); // Get queue name based on client name
+
+              if (!url) {
+                throw new Error(`Missing configuration for RABBIT_MQ_URI `);
+              }
+              if (!queue) {
+                throw new Error(`Missing configuration for RABBIT_MQ_${name}_QUEUE`);
+              }
+              return {
+                transport: Transport.RMQ, // Use RabbitMQ transport
+                options: {
+                  urls: [url], // RabbitMQ connection URI from env
+                  queue: queue, // Queue name from env, based on client name
+                  // queueOptions: {
+                  //   durable: true, // Make the queue durable (survives broker restarts)
+                  // }
                 }
               }
-            })
+            }
           }
         ])
       ],

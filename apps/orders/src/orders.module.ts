@@ -7,6 +7,8 @@ import * as joi from 'joi'
 import { OrderRepository } from './order.repository';
 import { MongooseModule } from '@nestjs/mongoose';
 import { Order, OrderSchema } from './schema/order.schema';
+import { RmqModule } from '@app/common';
+import { BILLING_SERVICE } from './constants/services';
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -23,7 +25,8 @@ import { Order, OrderSchema } from './schema/order.schema';
         name: Order.name,
         schema: OrderSchema
       }
-    ])
+    ]),
+    RmqModule.register({ name: BILLING_SERVICE })
   ],
   controllers: [OrdersController],
   providers: [OrdersService, OrderRepository],
