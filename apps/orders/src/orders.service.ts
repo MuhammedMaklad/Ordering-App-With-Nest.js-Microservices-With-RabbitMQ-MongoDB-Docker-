@@ -25,7 +25,6 @@ export class OrdersService {
         })
       )
       await session.commitTransaction()
-      this.logger.log(`Order Created Successfully From Orders Service`);
       return new CreateOrderResponse(order);
     } catch (error) {
       await session.abortTransaction()

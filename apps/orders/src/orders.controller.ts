@@ -14,7 +14,7 @@ export class OrdersController {
     @Res() response: Response
   ) {
     const data = await this.ordersService.createNewOrder(request);
-    this.logger.log(`Order Created Successfully: ${JSON.stringify(data)}`);
+    this.logger.log(`Order Created Successfully From Orders Controller changes`);
     return response.status(HttpStatus.CREATED).json({
       message: "Order Created Successfully",
       data

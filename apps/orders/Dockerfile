@@ -8,7 +8,9 @@ RUN npm install
 
 COPY . .
 
-RUN npm run build
+# RUN npm run build
+
+CMD [ "npm", "run", "start:dev" ]
 
 FROM node:alpine AS production
 

@@ -3,9 +3,12 @@
   "collection": "@nestjs/schematics",
   "sourceRoot": "apps/orders/src",
   "compilerOptions": {
-    "deleteOutDir": true,
     "webpack": true,
     "tsConfigPath": "apps/orders/tsconfig.app.json"
+  },
+  "watchOptions": {
+    "usePolling": true,
+    "interval": 1000
   },
   "monorepo": true,
   "root": "apps/orders",
